@@ -9,7 +9,7 @@ class checkList{
 	}
 
 	public function testeEcho(){
-		echo 'teste';
+		echo "teste-checklist";
 	}
 }
 

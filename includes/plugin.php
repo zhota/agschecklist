@@ -24,9 +24,9 @@ class Plugin {
 	}
 
 	private function init_components(){
-		$this->checklist = New Checklist();
+		//$this->checklist = New Checklist();
 		//$this->shortcode = New Shortcode();
-		//$this->template = New Template();
+		$this->template = New Template();
 		//$this->widget = New Widget();
 		//$this->lista_checklist = New WidgetLoop();
 
