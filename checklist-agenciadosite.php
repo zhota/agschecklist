@@ -11,6 +11,8 @@
 
    if(!defined('ABSPATH'))exit;
 
+
+
    //Plugin control
    define('AGSCHECKLIST_VERSION','0.1');
    define('AGSCHECKLIST__FILE__',__FILE__);
@@ -20,9 +22,12 @@
    register_activation_hook(__FILE__, array('Checklist Agência do Site','plugin_activation'));
    register_deactivation_hook(__FILE__, array('Checklist Agência do Site','plugin_deactivation'));
 
+   
+
+
    //Actions  
    require_once(AGSCHECKLIST__PLUGIN_DIR.'/includes/plugin.php');
- 
+   
 
    //Template
    // require_once(CHECKLIST_AGENCIADOSITE__PLUGIN_DIR.'/inclusdes/views/');
