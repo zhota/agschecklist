@@ -68,13 +68,26 @@
 
 .ags-design-title{
 	margin-top: 25px;
-	font-size: 32px;
+	font-size: 28px;
 	color: #fff;
 }
 
 .ags-design{
-	background: #02102A;
 	padding: 15px;
+	margin: 15px 0;
+}
+
+.não-iniciado{
+	background: #02102A;
+}
+
+.em-desenvolvimento{
+	background: #02102A;
+}
+
+.finalizado{
+	background: #02102A;
+	border: 5px solid #3AB54B;
 }
 
 .ags-design p{
@@ -99,19 +112,19 @@
 
 .ags-tooltip .ags-tooltiptext{
 	visibility: hidden;
-	width: 200px;
+	width: 240px;
 	background-color: #fff;
 	border-radius: 5px;
 	padding: 5px;
 	position: absolute;
 	z-index: 99999;
 	margin-left: -184px;
-	margin-top: -128px;
+	margin-top: -178px;
 }
 
 .ags-tooltip .ags-tooltiptext p{
 	color: #000;
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 	font-size: 9px;
 	font-weight: 900;
 	line-height: 1;
@@ -119,22 +132,36 @@
 
 .ags-em-desenvolvimento-leg:before{
 	content: '';
-	background: #011128;
-	padding: 0px 10px;
+	background: #02102A;
+	padding: 0 10px;
+	border: 5px solid #02102A;
 	margin-right: 5px;
 }
 
 .ags-aprovado-cliente-leg:before{
 	content: '';
 	background: #3AB54B;
-	padding: 0px 10px;
+	padding: 0 10px;
+	border: 5px solid #3AB54B;
 	margin-right: 5px;
 }
 
 .ags-finalizado-leg:before{
 	content: '';
-	background: #fff;
-	padding: 0px 5px;
+	background: #02102A;
+	padding: 0 10px;
 	border: 5px solid #3AB54B;
 	margin-right: 5px;
+}
+
+.ags-orcamento-leg:before{
+	content: '';
+	background: #A6A6A6;
+	padding: 0 10px;
+	border: 5px solid #A6A6A6;
+	margin-right: 5px;
+}
+
+.hide{
+	display: none;
 }

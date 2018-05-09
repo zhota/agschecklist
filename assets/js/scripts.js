@@ -13,7 +13,13 @@ $(document).ready(function () {
 		}
 	});			
 	$j('.ags-tooltip').hover(
-		function(){ $j('.ags-tooltiptext').addClass('ags-tooltiptext-show') },
-		function(){ $j('.ags-tooltiptext').removeClass('ags-tooltiptext-show') }
-		)
+		function(){ $j(this).find('.ags-tooltiptext').addClass('ags-tooltiptext-show') },
+		function(){ $j(this).find('.ags-tooltiptext').removeClass('ags-tooltiptext-show') }
+	)
+	function myAjax(){
+		$.ajax({
+			type: "POST",
+			url: '__FILE__/includes/adminmenu.php',
+		})
+	}
 });

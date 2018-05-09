@@ -74,13 +74,13 @@ class MySettingsPage
             'my-setting-admin' // Page
         );  
 
-        add_settings_field(
-            'id_number', // ID
-            'ID Number', // Title 
-            array( $this, 'id_number_callback' ), // Callback
-            'my-setting-admin', // Page
-            'setting_section_id' // Section           
-        );      
+        // add_settings_field(
+        //     'id_number', // ID
+        //     'ID Number', // Title 
+        //     array( $this, 'id_number_callback' ), // Callback
+        //     'my-setting-admin', // Page
+        //     'setting_section_id' // Section           
+        // );      
 
         add_settings_field(
             'notadodesigner-topo', 
@@ -96,7 +96,105 @@ class MySettingsPage
             array( $this, 'informacoesdodesigner_topo_callback' ), 
             'my-setting-admin', 
             'setting_section_id'
-        );    
+        );   
+
+        add_settings_section(
+        	'setting_section_footer_id',
+        	'Informações sobre o Rodapé',
+        	array( $this, 'print_section_footer'),
+        	'my-setting-admin'
+
+        );
+
+        add_settings_field(
+        	'notadodesigner-rodape',
+        	'Rodapé(Footer) - Nota do Designer:',
+        	array( $this, 'notadodesigner_rodape_callback'),
+        	'my-setting-admin',
+        	'setting_section_footer_id'
+    	);
+
+        add_settings_field(
+        	'informacoesdodesigner-rodape',
+        	'Rodapé(Footer) - Informações do Designer:',
+        	array( $this, 'informacoesdodesigner_rodape_callback'),
+        	'my-setting-admin',
+        	'setting_section_footer_id'
+    	);
+
+    	add_settings_section(
+    		'setting_section_content_id',
+    		'Informações sobre o conteúdo',
+    		array( $this, 'print_section_content'),
+    		'my-setting-admin'
+		);
+
+/*
+		add_settings_field(
+			'nomedapagina-conteudo',
+			'Definir o nome da página:',
+			array( $this, 'nomedapagina_conteudo_callback'),
+			'my-setting-admin',
+			'setting_section_content_id'
+		);
+
+		add_settings_field(
+			'notadodesigner-conteudo',
+			'Conteúdo - Nota do Designer:',
+			array( $this, 'notadodesigner_conteudo_callback'),
+			'my-setting-admin',
+			'setting_section_content_id'
+		);
+
+		add_settings_field(
+			'informacoesdodesigner-conteudo',
+			'Conteudo - Informações do Conteúdo:',
+			array( $this, 'informacoesdodesigner_conteudo_callback'),
+			'my-setting-admin',
+			'setting_section_content_id'
+		);
+*/		
+		//$this->repeatableStructure();
+
+		$this->repeatableStructure($array);
+    }
+
+    public function generateNewContent(){
+    	$data = array();
+
+    	foreach ($data as $row => $value) {
+    		$this->repeatableStructure($row);
+    	}
+    }
+
+    public function repeatableStructure($array){
+		add_settings_field(
+			'nomedapagina-conteudo',
+			'Definir o nome da página:',
+			array( $this, 'nomedapagina_conteudo_callback'),
+			'my-setting-admin',
+			'setting_section_content_id'
+		);
+		add_settings_field(
+			'informacoesdodesigner-conteudo',
+			'Informações do conteúdo:',
+			array( $this, 'informacoesdodesigner_conteudo_callback'),
+			'my-setting-admin',
+			'setting_section_content_id'
+		);
+		add_settings_field(
+			'notadodesigner-conteudo',
+			'Nota do Designer:',
+			array( $this, 'notadodesigner_conteudo_callback'),
+			'my-setting-admin',
+			'setting_section_content_id'
+		);
+    }
+
+    public function addMorePageButton(){
+    	?>
+			<p><input type="button" value="Adicionar nova Página" onclick=""></p>
+    	<?php
     }
 
     /**
@@ -107,14 +205,39 @@ class MySettingsPage
     public function sanitize( $input )
     {
         $new_input = array();
-        if( isset( $input['id_number'] ) )
-            $new_input['id_number'] = absint( $input['id_number'] );
+        // if( isset( $input['id_number'] ) )
+        //     $new_input['id_number'] = absint( $input['id_number'] );
 
+        //HEADER SANITIZE
         if( isset( $input['notadodesigner-topo'] ) )
             $new_input['notadodesigner-topo'] = sanitize_text_field( $input['notadodesigner-topo'] );
 
         if( isset( $input['informacoesdodesigner-topo'] ) )
             $new_input['informacoesdodesigner-topo'] = sanitize_text_field( $input['informacoesdodesigner-topo'] );
+
+        //FOOTER SANITIZE
+
+		if( isset( $input['notadodesigner-rodape'] ) )
+        	$new_input['notadodesigner-rodape'] = sanitize_text_field( $input['notadodesigner-rodape'] );
+
+        if( isset( $input['informacoesdodesigner-rodape'] ) )
+        	$new_input['informacoesdodesigner-rodape'] = sanitize_text_field( $input['informacoesdodesigner-rodape'] );
+       
+        //CONTENT SANITIZE
+
+        if( isset( $input['nomedapagina-conteudo'] ) )
+        	$new_input['nomedapagina-conteudo'] = sanitize_text_field( $input['nomedapagina-conteudo'] );
+
+        if( isset ( $input['notadodesigner-conteudo'] ) )
+        	$new_input['notadodesigner-conteudo'] = sanitize_text_field( $input['notadodesigner-conteudo'] );
+
+        if( isset( $input['informacoesdodesigner-conteudo'] ) )
+        	$new_input['informacoesdodesigner-conteudo'] = sanitize_text_field( $input['informacoesdodesigner-conteudo'] );
+
+        $clean = '';
+        if( is_array( $input ) )
+        	$clean = array_map('sanitize_text_field', $input);
+        return $clean;
 
         return $new_input;
     }
@@ -124,25 +247,37 @@ class MySettingsPage
      */
     public function print_section_info()
     {
-        print 'Adicione as informações abaixo:';
+        print 'Adicione as informações referente ao Topo(Header) abaixo:';
     }
 
-    /** 
-     * Get the settings option array and print one of its values
-     */
-
-
-    public function id_number_callback()
+    public function print_section_footer()
     {
-        printf(
-            '<input type="text" id="id_number" name="my_option_name[id_number]" value="%s" />',
-            isset( $this->options['id_number'] ) ? esc_attr( $this->options['id_number']) : ''
-        );
+    	print 'Adicione as informações referentes ao Rodapé(Footer) abaixo:';
+    }
+
+    public function print_section_content(){
+    	print 'Adicione as informações referentes ao Conteúdo abaixo:';
     }
 
     /** 
      * Get the settings option array and print one of its values
      */
+
+
+    // public function id_number_callback()
+    // {
+    //     printf(
+    //         '<input type="text" id="id_number" name="my_option_name[id_number]" value="%s" />',
+    //         isset( $this->options['id_number'] ) ? esc_attr( $this->options['id_number']) : ''
+    //     );
+    // }
+
+    /** 
+     * Get the settings option array and print one of its values
+     */
+
+//CALLBACKS DO HEADER - INICIO
+
     public function notadodesign_topo_callback()
     {
         printf(
@@ -166,5 +301,68 @@ class MySettingsPage
    		<?php
     }
 
+// CALLBACKS DO HEADER - FIM
+
+// CALLBACKS DO FOOTER - INICIO
+
+
+    public function notadodesigner_rodape_callback()
+    {
+        printf(
+            '<input type="text" id="notadodesigner-rodape" name="my_option_name[notadodesigner-rodape]" value="%s" />',
+            isset( $this->options['notadodesigner-rodape'] ) ? esc_attr( $this->options['notadodesigner-rodape']) : ''
+        );
+
+
+    }
+
+
+    public function informacoesdodesigner_rodape_callback(){
+    	?>
+        	<select name="my_option_name[informacoesdodesigner-rodape]" id="informacoesdodesigner-rodape">
+        		<?php $selected = (isset( $this->options['informacoesdodesigner-rodape'] ) && $this->options['informacoesdodesigner-rodape'] === 'Não iniciado') ? 'selected' : '' ; ?>
+	            <option value="Não iniciado" <?php echo $selected; ?>>Não iniciado</option>
+	            <?php $selected = (isset( $this->options['informacoesdodesigner-rodape'] ) && $this->options['informacoesdodesigner-rodape'] === 'Em desenvolvimento') ? 'selected' : '' ; ?>
+	            <option value="Em Desenvolvimento" <?php echo $selected; ?>>Em desenvolvimento</option>
+	            <?php $selected = (isset( $this->options['informacoesdodesigner-rodape'] ) && $this->options['informacoesdodesigner-rodape'] === 'Finalizado') ? 'selected' : '' ; ?>
+	            <option value="Finalizado" <?php echo $selected; ?>>Finalizado</option>
+       		</select> 
+    	<?php
+    }
+
+// CALLBACKS DO FOOTER - FIM
+
+// CALLBACKS DO CONTEUDO - INICIO
+
+	public function nomedapagina_conteudo_callback(){
+		printf(
+			'<input type="text" id="nomedapagina-conteudo[]" name="my_option_name[nomedapagina-conteudo[]]" value="%s" />',
+			isset( $this->options['nomedapagina-conteudo[]'] ) ? esc_attr( $this->options['nomedapagina-conteudo[]']) : ''
+		);
+	}
+
+	public function notadodesigner_conteudo_callback(){
+		printf(
+			'<input type="text" id="notadodesigner-conteudo" name="my_option_name[notadodesigner-conteudo]" value="%s" />',
+			isset( $this->options['notadodesigner-conteudo'] ) ? esc_attr( $this->options['notadodesigner-conteudo']) : ''
+		);
+	}
+
+
+	public function informacoesdodesigner_conteudo_callback(){
+		?>
+			<select name="my_option_name[informacoesdodesigner-conteudo]" id="informacoesdodesigner-conteudo">
+		<?php $selected = (isset( $this->options['informacoesdodesigner-conteudo'] ) && $this->options['informacoesdodesigner-conteudo'] === 'Não iniciado') ? 'selected' : '' ; ?>
+	            <option value="Não iniciado" <?php echo $selected; ?>>Não iniciado</option>
+	            <?php $selected = (isset( $this->options['informacoesdodesigner-conteudo'] ) && $this->options['informacoesdodesigner-conteudo'] === 'Em desenvolvimento') ? 'selected' : '' ; ?>
+	            <option value="Em Desenvolvimento" <?php echo $selected; ?>>Em desenvolvimento</option>
+	            <?php $selected = (isset( $this->options['informacoesdodesigner-conteudo'] ) && $this->options['informacoesdodesigner-conteudo'] === 'Finalizado') ? 'selected' : '' ; ?>
+	            <option value="Finalizado" <?php echo $selected; ?>>Finalizado</option>
+       		</select> 
+    	<?php
+	}
+// CALLBACKS DO CONTEUDO - FIM
+
 }
+
 
